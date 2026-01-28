@@ -39,7 +39,8 @@ app.post("/create-post", async (req, res) => {
 app.get("/get-post", async (req, res) => {
   try {
     const user = await prisma.post.findMany({ select: { title: true } })
-    res.status(200).json({ data: user })
+    const totalPosts = await prisma.post.count();
+    res.status(200).json({ data: user, totalPosts })
   } catch (err) {
     console.error(err)
     res.status(500).json({ message: "Internal Server Error" })
