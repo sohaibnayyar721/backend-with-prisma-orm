@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model post {
+  id        Int     @id @default(autoincrement())
+  title     String
+  published Boolean @default(true)
+  authorId  Int
+  user      user    @relation(fields: [authorId], references: [id], map: "Post_authorId_fkey")
+
+  @@index([authorId], map: "Post_authorId_fkey")
+}
+
+model user {
+  id   Int    @id @default(autoincrement())
+  name String
+  post post[]
+}
